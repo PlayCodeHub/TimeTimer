@@ -1,11 +1,14 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TextInput } from 'react-native';
 
 import { Text, View } from '../components/Themed';
 import Layout from '../constants/Layout';
 import { RootTabScreenProps } from '../types';
 import { PieChart } from 'react-native-chart-kit';
+import { useEffect, useRef, useState } from 'react';
+import CountdownNumberInput from '../components/CountdownNumberInput';
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
+  const [remainingSeconds, setRemainingSeconds] = useState(0);
   const size = Layout.window.width - Layout.window.width / 10 * 3,
     showSeconds = false,
     colorClock = 'rgba(255,255,255,0.8)',
@@ -27,18 +30,35 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
   let hour = d.getHours();
 
   const radius = 70;
-  const remainingSeconds = 2400;
   const remainingSecondsPercentage = remainingSeconds / (60 * 60) * 100;
   const circleCircumfence = 2 * Math.PI * radius;
   const strokeDashOffSet = circleCircumfence - (circleCircumfence * remainingSecondsPercentage) / 100;
 
+  const existingTimeout = useRef<NodeJS.Timeout>();
+
+  // @todo can find a better way of counting down
+  useEffect(() => {
+    if (existingTimeout.current) {
+      clearTimeout(existingTimeout.current);
+    }
+    if (remainingSeconds === 0) return;
+    existingTimeout.current = setTimeout(() => setRemainingSeconds((second) => second - 1), 1000);
+  }, [remainingSeconds])
+  
   return (
     <View style={{
       flex: 1,
-      backgroundColor: "rgba(255,255,255,0.3) ",
-      flexDirection: "row",
-      justifyContent: "center"
+      backgroundColor: "rgba(255,255,255,0.3)",
+      flexDirection: "column",
+      justifyContent: "space-between"
     }}>
+      <View>
+        <CountdownNumberInput remainingSeconds={remainingSeconds} setRemainingSeconds={setRemainingSeconds} />
+      </View>
+      <View style={{
+        flex: 1,
+        justifyContent: "center"
+      }}>
   <View
     style={{
       backgroundColor: colorClock,
@@ -58,7 +78,6 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
         key={i}
           style={{
             position: 'absolute',
-            backgroundColor: "none",
             transform: [
               { rotate: a + 'deg' },
               { translateX: size / 2 + 25 },
@@ -136,7 +155,6 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
         key={i}
           style={{
             position: 'absolute',
-            backgroundColor: "none",
             transform: [
               { rotate: a + 'deg' },
               { translateX: size / 2 - 15 },
@@ -216,6 +234,11 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
     fillShadowGradientTo: "blue",
   }}
   ></PieChart>
+  </View>
+
+  <View>
+    <Text>Bottom</Text>
+  </View>
   </View>
 )
 }
