@@ -3,9 +3,9 @@ import { StyleSheet, TextInput } from 'react-native';
 import { Text, View } from '../components/Themed';
 import Layout from '../constants/Layout';
 import { RootTabScreenProps } from '../types';
-import { PieChart } from 'react-native-chart-kit';
 import { useEffect, useRef, useState } from 'react';
 import CountdownNumberInput from '../components/CountdownNumberInput';
+import Pie from '../components/pie';
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   const [remainingSeconds, setRemainingSeconds] = useState(0);
@@ -207,33 +207,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
       }}
     />
   </View>
-  <PieChart 
-  style={{
-    position: "absolute",
-    alignSelf: "center"
-  }}
-  hasLegend={false}
-  data={[
-    {
-      percentage: 30, 
-      color:"transparent", 
-    }, 
-    {
-      percentage: 70, 
-      color: "rgb(199,17,46)", 
-    }]}
-  backgroundColor={"transparent"}
-  paddingLeft={'0'}
-  accessor="percentage"
-  height={size * 1.15}
-  width={size * 1.15}
-  center={[size * 1.15 / 4, 0]}
-  absolute
-  chartConfig={{
-    fillShadowGradient: "red",
-    fillShadowGradientTo: "blue",
-  }}
-  ></PieChart>
+  <Pie size={size} percentage={70} color={"rgb(199,17,46)"}/>  
   </View>
 
   <View>
