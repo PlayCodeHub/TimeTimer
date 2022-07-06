@@ -12,6 +12,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
   const [remainingSeconds, setRemainingSeconds] = useState(0);
   const size = Layout.window.width - Layout.window.width / 10 * 3
   const existingTimeout = useRef<NodeJS.Timeout>();
+  const piePercentage = remainingSeconds / (60 * 60) * 100
 
   // @todo can find a better way of counting down
   useEffect(() => {
@@ -37,7 +38,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
         justifyContent: "center"
       }}>
     <Clock size={size} />
-  <Pie size={size} percentage={70} color={"rgb(199,17,46)"}/>  
+  <Pie size={size} percentage={piePercentage} color={"rgb(199,17,46)"}/>  
   </View>
 
   <View>
