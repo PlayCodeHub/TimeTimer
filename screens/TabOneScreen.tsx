@@ -10,12 +10,18 @@ import Colors from "../constants/Colors";
 export default function TabOneScreen() {
   const [remainingSeconds, setRemainingSeconds] = useState(0);
   const [pause, setPause] = useState(true);
+  const [minutesInput, setMinutesInput] = useState("0");
 
   const size = Layout.window.width - (Layout.window.width / 10) * 3;
   const existingTimeout = useRef<NodeJS.Timeout>();
   const piePercentage = (remainingSeconds / (60 * 60)) * 100;
 
   const isDisablePlayButton = remainingSeconds === 0;
+
+  const onRestartPress = () => {
+    setPause(true);
+    setRemainingSeconds(Number(minutesInput) * 60);
+  };
 
   // @todo can find a better way of counting down
   useEffect(() => {
@@ -32,6 +38,12 @@ export default function TabOneScreen() {
     );
   }, [remainingSeconds, pause]);
 
+  useEffect(() => {
+    if (pause) {
+      clearTimeout(existingTimeout.current);
+    }
+  }, [pause]);
+
   return (
     <View
       style={{
@@ -45,6 +57,8 @@ export default function TabOneScreen() {
         <CountdownNumberInput
           remainingSeconds={remainingSeconds}
           setRemainingSeconds={setRemainingSeconds}
+          minutesInput={minutesInput}
+          setMinutesInput={setMinutesInput}
         />
       </View>
       <View
@@ -62,7 +76,8 @@ export default function TabOneScreen() {
           alignSelf: "center",
           minWidth: "20%",
           height: "20%",
-          justifyContent: "center"
+          justifyContent: "center",
+          flexDirection: "row"
         }}
       >
         <FontAwesome.Button
@@ -81,6 +96,26 @@ export default function TabOneScreen() {
             // marginLeft: "17%",
             margin: "0 30 0 30"
           }}
+        />
+
+        <FontAwesome.Button
+          onPress={onRestartPress}
+          name={"rotate-right"}
+          size={50}
+          color={Colors.light.text}
+          backgroundColor={"#fff"}
+          borderRadius={1000}
+          style={{
+            height: "66px",
+            justifyContent: "center"
+          }}
+          disabled={isDisablePlayButton}
+          iconStyle={
+            {
+              // marginLeft: "17%",
+              // margin: "0 30 0 30"
+            }
+          }
         />
       </View>
     </View>

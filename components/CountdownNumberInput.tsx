@@ -4,14 +4,17 @@ import { TextInput } from "react-native";
 export interface CountdownNumberInputProps {
   remainingSeconds: number;
   setRemainingSeconds: Function;
+  minutesInput: string;
+  setMinutesInput: (text: string) => void;
 }
 
 export default function CountdownNumberInput({
   remainingSeconds,
-  setRemainingSeconds
+  setRemainingSeconds,
+  minutesInput,
+  setMinutesInput
 }: CountdownNumberInputProps) {
   const [displayMinute, setDisplayMinute] = useState(false);
-  const [minutesInput, setMinutesInput] = useState("0");
 
   const toRunningTime = (seconds: number) => {
     const minutes = Math.trunc(seconds / 60).toString();
