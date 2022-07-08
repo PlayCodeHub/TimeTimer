@@ -1,12 +1,15 @@
-import { useState } from 'react';
-import { TextInput } from 'react-native';
+import { useState } from "react";
+import { TextInput } from "react-native";
 
 export interface CountdownNumberInputProps {
   remainingSeconds: number;
   setRemainingSeconds: Function;
 }
 
-export default function CountdownNumberInput({ remainingSeconds, setRemainingSeconds }: CountdownNumberInputProps) {
+export default function CountdownNumberInput({
+  remainingSeconds,
+  setRemainingSeconds
+}: CountdownNumberInputProps) {
   const [displayMinute, setDisplayMinute] = useState(false);
   const [minutesInput, setMinutesInput] = useState("0");
 
@@ -16,23 +19,22 @@ export default function CountdownNumberInput({ remainingSeconds, setRemainingSec
     const paddedSeconds = roundedSeconds.toString().padEnd(2, "0");
 
     return `${minutes.padStart(2, "0")}:${paddedSeconds}`;
-  }
+  };
 
   const onTextInputBlur = () => {
     setDisplayMinute(false);
-    setRemainingSeconds(parseInt(minutesInput) * 60)
-  }
+    setRemainingSeconds(Number(minutesInput) * 60);
+  };
 
   return (
     <TextInput
-      keyboardType='numeric'
+      keyboardType="numeric"
       onChangeText={setMinutesInput}
-      value={displayMinute ? minutesInput: toRunningTime(remainingSeconds)}
+      value={displayMinute ? minutesInput : toRunningTime(remainingSeconds)}
       onFocus={() => setDisplayMinute(true)}
       onBlur={onTextInputBlur}
-      maxLength={10}  
+      maxLength={10}
       selectTextOnFocus
     />
   );
 }
-

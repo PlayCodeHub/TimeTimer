@@ -1,39 +1,40 @@
-import { PieChart } from 'react-native-chart-kit';
+import { PieChart } from "react-native-chart-kit";
 
 export interface PieProps {
-  size: number,
-  percentage: number,
-  color: string,
+  size: number;
+  percentage: number;
+  color: string;
 }
 
-export default function Pie ({ size, percentage, color }: PieProps) {
+export default function Pie({ size, percentage, color }: PieProps) {
   return (
-    <PieChart 
+    <PieChart
       style={{
-        position: 'absolute',
-        alignSelf: 'center',
+        position: "absolute",
+        alignSelf: "center"
       }}
       hasLegend={false}
       data={[
         {
-          percentage: 100-percentage, 
-          color:"transparent", 
-        }, 
+          percentage: 100 - percentage,
+          color: "transparent"
+        },
         {
-          percentage, 
-          color, 
-        }]}
+          percentage,
+          color
+        }
+      ]}
       backgroundColor={"transparent"}
-      paddingLeft={'0'}
+      paddingLeft={"0"}
       accessor="percentage"
       height={size * 1.15}
       width={size * 1.15}
-      center={[size * 1.15 / 4, 0]}
+      center={[(size * 1.15) / 4, 0]}
       absolute
       chartConfig={{
         fillShadowGradient: "red",
-        fillShadowGradientTo: "blue",
+        fillShadowGradientTo: "blue"
       }}
-  ></PieChart>
+    />
   );
 }
