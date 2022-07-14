@@ -1,4 +1,7 @@
-import { StyleSheet } from "react-native";
+import { useRef } from "react";
+import { View as DefaultView, StyleSheet } from "react-native";
+import { useAppDispatch } from "../redux/hooks";
+import { setClockCoordinates } from "../redux/reducers";
 
 import { Text, View } from "./Themed";
 
@@ -16,6 +19,9 @@ export default function Clock({ size }: { size: number }) {
   const circleCircumfence = 2 * Math.PI * radius;
   const strokeDashOffSet =
     circleCircumfence - (circleCircumfence * remainingSecondsPercentage) / 100;
+  const center = useRef<DefaultView>(null);
+
+  const dispatch = useAppDispatch();
 
   return (
     <View
@@ -29,6 +35,7 @@ export default function Clock({ size }: { size: number }) {
         }
       ]}
     >
+      {/* Numbers */}
       {[...Array(12).keys()].map((i) => {
         let a = -60 + 30 * i;
         let b = 60 - 30 * i;
@@ -61,14 +68,22 @@ export default function Clock({ size }: { size: number }) {
           </View>
         );
       })}
-      <View
+      {/* Clock Middle Circle */}
+      <DefaultView
+        ref={center}
         style={[
           styles.middleCircle,
           {
             backgroundColor: colorCenter
           }
         ]}
+        onLayout={() => {
+          center.current?.measureInWindow((x, y) =>
+            dispatch(setClockCoordinates({ x, y }))
+          );
+        }}
       />
+      {/* Clock hand */}
       <View
         style={[
           styles.clockHand,
