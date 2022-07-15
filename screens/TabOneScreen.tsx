@@ -3,15 +3,18 @@ import Layout from "../constants/Layout";
 import { useEffect, useRef, useState } from "react";
 import CountdownNumberInput from "../components/CountdownNumberInput";
 import Clock from "../components/Clock";
-import Pie from "../components/pie";
+import Pie from "../components/Pie";
 import { FontAwesome } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
+import { useAppSelector } from "../redux/hooks";
+import { selectPanAngle } from "../redux/reducers";
 
 export default function TabOneScreen() {
   const [remainingSeconds, setRemainingSeconds] = useState(0);
   const [pause, setPause] = useState(true);
   const [minutesInput, setMinutesInput] = useState("0");
 
+  const panAngle = useAppSelector(selectPanAngle);
   const size = Layout.window.width - (Layout.window.width / 10) * 3;
   const existingTimeout = useRef<NodeJS.Timeout>();
   const piePercentage = (remainingSeconds / (60 * 60)) * 100;
@@ -43,6 +46,15 @@ export default function TabOneScreen() {
       clearTimeout(existingTimeout.current);
     }
   }, [pause]);
+
+  useEffect(() => {
+    if (panAngle) {
+      let remainingMinutes = (panAngle - 270) / -6;
+      if (remainingMinutes > 60) remainingMinutes -= 60;
+
+      setRemainingSeconds(Math.trunc(remainingMinutes) * 60);
+    }
+  }, [panAngle]);
 
   return (
     <View
@@ -81,21 +93,23 @@ export default function TabOneScreen() {
         }}
       >
         <FontAwesome.Button
-          onPress={() => setPause((pause) => !pause)}
+          onPress={() => setPause((newPause) => !newPause)}
           name={pause ? "play" : "pause"}
           size={60}
           color={Colors.dark.text}
           backgroundColor={isDisablePlayButton ? "grey" : "red"}
           borderRadius={1000}
           style={{
-            height: "60px",
+            height: 60,
             justifyContent: "center"
           }}
           disabled={isDisablePlayButton}
-          iconStyle={{
-            // marginLeft: "17%",
-            margin: "0 30 0 30"
-          }}
+          iconStyle={
+            {
+              // marginLeft: "17%",
+              // margin: "0 30 0 30" @todo this will cause crash in android
+            }
+          }
         />
 
         <FontAwesome.Button
@@ -106,7 +120,7 @@ export default function TabOneScreen() {
           backgroundColor={"#fff"}
           borderRadius={1000}
           style={{
-            height: "66px",
+            height: 66,
             justifyContent: "center"
           }}
           disabled={isDisablePlayButton}
