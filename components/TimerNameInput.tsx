@@ -1,7 +1,7 @@
 import { TextInput } from "react-native";
 import { StyleSheet } from "react-native";
 
-export interface CountdownNumberInputProps {
+export interface TimerNameInputProps {
   timerName: string;
   setTimerName: (text: string) => void;
 }
@@ -9,7 +9,7 @@ export interface CountdownNumberInputProps {
 export default function TimerNameInput({
   timerName,
   setTimerName
-}: CountdownNumberInputProps) {
+}: TimerNameInputProps) {
   return (
     <TextInput
       style={styles.timerNameText}
