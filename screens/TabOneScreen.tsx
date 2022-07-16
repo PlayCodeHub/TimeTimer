@@ -6,6 +6,7 @@ import Clock from "../components/Clock";
 import Pie from "../components/Pie";
 import { FontAwesome } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
+import TimerNameInput from "../components/TimerNameInput";
 import { useAppSelector } from "../redux/hooks";
 import { selectPanAngle } from "../redux/reducers";
 
@@ -13,6 +14,7 @@ export default function TabOneScreen() {
   const [remainingSeconds, setRemainingSeconds] = useState(0);
   const [pause, setPause] = useState(true);
   const [minutesInput, setMinutesInput] = useState("0");
+  const [timerName, setTimerName] = useState("Timer");
 
   const panAngle = useAppSelector(selectPanAngle);
   const size = Layout.window.width - (Layout.window.width / 10) * 3;
@@ -65,6 +67,9 @@ export default function TabOneScreen() {
         justifyContent: "space-between"
       }}
     >
+      <View>
+        <TimerNameInput timerName={timerName} setTimerName={setTimerName} />
+      </View>
       <View>
         <CountdownNumberInput
           remainingSeconds={remainingSeconds}
