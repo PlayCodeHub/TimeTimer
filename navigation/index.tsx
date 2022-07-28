@@ -14,8 +14,9 @@ import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import ModalScreen from "../screens/ModalScreen";
 import NotFoundScreen from "../screens/NotFoundScreen";
-import TabOneScreen from "../screens/TabOneScreen";
-import TabTwoScreen from "../screens/TabTwoScreen";
+import SettingsScreen from "../screens/SettingsScreen";
+import TimerScreen from "../screens/TimerScreen";
+import TimerListScreen from "../screens/TimerListScreen";
 import {
   RootStackParamList,
   RootTabParamList,
@@ -80,10 +81,20 @@ function BottomTabNavigator() {
     >
       <BottomTab.Screen
         name="TabOne"
-        component={TabOneScreen}
-        options={({ navigation }: RootTabScreenProps<"TabOne">) => ({
-          title: "Tab One",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+        component={TimerListScreen}
+        options={() => ({
+          title: "Saved list",
+          tabBarIcon: ({ color }) => <TabBarIcon name="bars" color={color} />
+        })}
+      />
+      <BottomTab.Screen
+        name="TabTwo"
+        component={TimerScreen}
+        options={({ navigation }) => ({
+          title: "Timer",
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="clock-o" color={color} />
+          ),
           headerRight: () => (
             <Pressable
               onPress={() => navigation.navigate("Modal")}
@@ -101,12 +112,13 @@ function BottomTabNavigator() {
           )
         })}
       />
+
       <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoScreen}
+        name="Settings"
+        component={SettingsScreen}
         options={{
-          title: "Tab Two",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />
+          title: "Settings",
+          tabBarIcon: ({ color }) => <TabBarIcon name="gears" color={color} />
         }}
       />
     </BottomTab.Navigator>
