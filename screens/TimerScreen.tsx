@@ -10,7 +10,7 @@ import TimerNameInput from "../components/TimerNameInput";
 import { useAppSelector } from "../redux/hooks";
 import { selectPanAngle } from "../redux/reducers";
 
-export default function TabOneScreen() {
+export default function TimerScreen() {
   const [remainingSeconds, setRemainingSeconds] = useState(0);
   const [pause, setPause] = useState(true);
   const [minutesInput, setMinutesInput] = useState("0");

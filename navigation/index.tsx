@@ -8,7 +8,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
-import { ColorSchemeName, Pressable } from "react-native";
+import { ColorSchemeName } from "react-native";
 
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
@@ -17,11 +17,7 @@ import NotFoundScreen from "../screens/NotFoundScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import TimerScreen from "../screens/TimerScreen";
 import TimerListScreen from "../screens/TimerListScreen";
-import {
-  RootStackParamList,
-  RootTabParamList,
-  RootTabScreenProps
-} from "../types";
+import { RootStackParamList, RootTabParamList } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
 
 export default function Navigation({}: { colorScheme: ColorSchemeName }) {
@@ -74,43 +70,26 @@ function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="TimerList"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint
       }}
     >
       <BottomTab.Screen
-        name="TabOne"
+        name="TimerList"
         component={TimerListScreen}
-        options={() => ({
+        options={{
           title: "Saved list",
           tabBarIcon: ({ color }) => <TabBarIcon name="bars" color={color} />
-        })}
+        }}
       />
       <BottomTab.Screen
-        name="TabTwo"
+        name="Timer"
         component={TimerScreen}
-        options={({ navigation }) => ({
+        options={{
           title: "Timer",
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon name="clock-o" color={color} />
-          ),
-          headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate("Modal")}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1
-              })}
-            >
-              <FontAwesome
-                name="info-circle"
-                size={25}
-                color={Colors[colorScheme].text}
-                style={{ marginRight: 15 }}
-              />
-            </Pressable>
-          )
-        })}
+          tabBarIcon: ({ color }) => <TabBarIcon name="clock-o" color={color} />
+        }}
       />
 
       <BottomTab.Screen
